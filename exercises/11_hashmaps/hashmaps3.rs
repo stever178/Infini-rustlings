@@ -31,6 +31,30 @@ fn build_scores_table(results: &str) -> HashMap<&str, Team> {
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
+        if !scores.contains_key(&team_1_name) {
+            // scores.entry(team_1_name).or_insert();
+            scores.insert(team_1_name, Team {
+                goals_scored: team_1_score,
+                goals_conceded: team_2_score,
+            });
+        } else {
+            let team = scores.get_mut(&team_1_name).unwrap();
+            team.goals_scored += team_1_score;
+            team.goals_conceded += team_2_score;
+        }
+        
+        // if !scores.contains_key(&team_2_name) {
+            // scores.insert(team_2_name, Team {
+        if let std::collections::hash_map::Entry::Vacant(e) = scores.entry(team_2_name) {
+            e.insert( Team{
+                goals_scored: team_2_score,
+                goals_conceded: team_1_score,
+            });
+        } else {
+            let team = scores.get_mut(&team_2_name).unwrap();
+            team.goals_scored += team_2_score;
+            team.goals_conceded += team_1_score;
+        }
     }
 
     scores
