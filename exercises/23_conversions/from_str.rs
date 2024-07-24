@@ -44,12 +44,12 @@ impl FromStr for Person {
     fn from_str(s: &str) -> Result<Self, Self::Err> {     
         let mut s = s.split(',');
         let (Some(name), Some(age), None) = (s.next(), s.next(), s.next()) else {
-            return Err(ParsePersonError::BadLen);
+            return Err(ParsePersonError::BadLen)
         };
 
         let name = name.to_string();
         if name.is_empty() {
-            return Err(ParsePersonError::NoName);
+            return Err(ParsePersonError::NoName)
         }
 
         let age = age.parse::<u8>().map_err(ParsePersonError::ParseInt)?;
